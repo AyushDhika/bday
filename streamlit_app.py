@@ -1,4 +1,4 @@
-# app.py — Streamlit luxury birthday bouquet (optimised)
+# app.py — Streamlit luxury birthday bouquet (full-screen flower shower)
 import streamlit as st
 import streamlit.components.v1 as components
 
@@ -26,22 +26,14 @@ BIRTHDAY_HTML = r"""
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
-  :root{
-    --gold:#d4af37; --gold-lt:#f7e7a1;
-    --blush:#ffd1e1; --ink:#f8dfe8;
-  }
+  :root{ --gold:#d4af37; --gold-lt:#f7e7a1; --blush:#ffd1e1; --ink:#f8dfe8; }
   html{background:#0c0208}
   body{
     font-family:'Cormorant Garamond',Georgia,serif;
     color:var(--ink);position:relative;overflow-x:hidden;
-    background:
-      radial-gradient(circle at 50% 20%, #4a0d2e 0%, #1c0412 55%, #0c0208 100%);
+    background:radial-gradient(circle at 50% 20%, #4a0d2e 0%, #1c0412 55%, #0c0208 100%);
   }
-  /* gold frame — fixed, cheap (no shadows) */
-  body::before{
-    content:"";position:fixed;inset:12px;pointer-events:none;z-index:3;
-    border:1px solid rgba(212,175,55,.4);
-  }
+  body::before{content:"";position:fixed;inset:12px;pointer-events:none;z-index:3;border:1px solid rgba(212,175,55,.4)}
   .frame-inner{position:fixed;inset:19px;pointer-events:none;z-index:3;border:1px solid rgba(212,175,55,.15)}
   @media (max-width:520px){ body::before{inset:7px} .frame-inner{inset:13px} }
 
@@ -58,7 +50,6 @@ BIRTHDAY_HTML = r"""
     .corner--tr,.corner--br{right:8px}
   }
 
-  /* static gold gradient (no animation → no repaint) */
   .gold{
     background:linear-gradient(100deg,#a87b18 0%,#f7e7a1 22%,#d4af37 45%,#fff4cf 55%,#d4af37 70%,#a87b18 100%);
     -webkit-background-clip:text;background-clip:text;color:transparent;
@@ -66,14 +57,13 @@ BIRTHDAY_HTML = r"""
 
   #fx{position:fixed;inset:0;width:100%;height:100%;z-index:50;pointer-events:none}
 
-  /* ================= INTRO (in normal flow) ================= */
+  /* ================= INTRO ================= */
   #intro{
     position:relative;z-index:100;
     min-height:min(100svh, 760px);
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     text-align:center;padding:48px 24px 38px;
-    cursor:pointer;touch-action:manipulation;
-    -webkit-tap-highlight-color:transparent;
+    cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
     background:
       radial-gradient(circle at 50% 45%, rgba(255,122,168,.20), transparent 45%),
       radial-gradient(ellipse at 50% 40%, #3d0b26 0%, #1c0512 62%, #0a0206 100%);
@@ -89,13 +79,9 @@ BIRTHDAY_HTML = r"""
     pointer-events:none;
   }
   .seal{
-    width:126px;height:126px;border-radius:50%;position:relative;z-index:2;
-    display:grid;place-items:center;
+    width:126px;height:126px;border-radius:50%;position:relative;z-index:2;display:grid;place-items:center;
     background:radial-gradient(circle at 34% 28%, #fff8dc 0%, #f7e7a1 18%, #f3d57a 36%, #d4af37 60%, #a87b18 84%, #6b4a0a 100%);
-    box-shadow:
-      0 0 0 5px rgba(212,175,55,.16),
-      0 18px 40px rgba(0,0,0,.55),
-      0 0 60px rgba(212,175,55,.35);
+    box-shadow:0 0 0 5px rgba(212,175,55,.16),0 18px 40px rgba(0,0,0,.55),0 0 60px rgba(212,175,55,.35);
   }
   .seal::before{content:"";position:absolute;inset:10px;border-radius:50%;border:1.5px dashed rgba(90,40,5,.4)}
   .seal span{font-family:'Great Vibes',cursive;font-size:4rem;color:#4a0d1c;line-height:1;transform:translateY(4px)}
@@ -115,8 +101,7 @@ BIRTHDAY_HTML = r"""
     color:var(--gold-lt);
     background:linear-gradient(135deg, rgba(212,175,55,.18), rgba(107,20,40,.35));
     border:1px solid rgba(212,175,55,.75);border-radius:999px;padding:15px 30px;
-    transition:transform .2s;
-    touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+    transition:transform .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
   }
   #openBtn:active{transform:scale(.96)}
   #openBtn:focus-visible{outline:2px solid var(--gold-lt);outline-offset:5px}
@@ -262,7 +247,7 @@ BIRTHDAY_HTML = r"""
 
 <script>
 /* =========================================================
-   0. OPEN LOGIC FIRST (taps can never be lost)
+   0. OPEN LOGIC FIRST
    ========================================================= */
 let started = false;
 const introEl = document.getElementById('intro');
@@ -301,7 +286,7 @@ const n1 = v => v.toFixed(1);
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* =========================================================
-   2. FLOWER SHAPES — leaner node counts
+   2. FLOWER SHAPES
    ========================================================= */
 function rose(r, c){
   let s = '';
@@ -379,7 +364,7 @@ function leafShape(len, c){
 }
 
 /* =========================================================
-   3. ARRANGEMENT — 16 flowers total
+   3. ARRANGEMENT
    ========================================================= */
 const flowers = [
   { t:'orchid',     x:320, y:96,  r:36, c:C.champ, rot:  0, d:.30 },
@@ -444,19 +429,16 @@ function buildBouquet(){
     </linearGradient>
   </defs>`);
 
-  /* greenery */
   out.push('<g class="greenery">');
   greenery.forEach(g => out.push(`<g transform="translate(${g.x},${g.y})">
     <g class="bloom" style="--d:${g.d}s">${eucalyptus(g.len, C.sage, g.dir)}</g></g>`));
   out.push('</g>');
 
-  /* back wrap */
   out.push(`<g class="wrapArt">
     <path d="M 80 220 Q 40 420 120 620 L 520 620 Q 600 420 560 220 Q 440 150 320 150 Q 200 150 80 220 Z"
       fill="url(#wrapGrad)" stroke="#a87b18" stroke-width="1.4" stroke-opacity=".6"/>
   </g>`);
 
-  /* stems (12 only) */
   out.push('<g class="stems">');
   for (let i = 0; i < 12; i++){
     const a = (i/12)*Math.PI*2;
@@ -466,34 +448,28 @@ function buildBouquet(){
   }
   out.push('</g>');
 
-  /* leaves */
   out.push('<g class="leaves">');
   leaves.forEach(l => out.push(`<g transform="translate(${l.x},${l.y}) rotate(${l.a})">${leafShape(l.len, l.c)}</g>`));
   out.push('</g>');
 
-  /* flowers, back to front */
   const sorted = flowers.slice().sort((a,b) => a.y - b.y);
   sorted.forEach(f => out.push(`<g transform="translate(${n1(f.x)},${n1(f.y)}) rotate(${n1(f.rot)})">
     <g class="bloom" style="--d:${f.d.toFixed(2)}s">${draw(f)}</g></g>`));
 
-  /* hero flowers that emit a small burst when they open */
   heroBlasts = [flowers[6], flowers[0], flowers[1], flowers[2], flowers[9], flowers[14]];
 
-  /* front wrap */
   out.push(`<g class="wrapArt">
     <path d="M 130 420 Q 140 540 200 640 L 440 640 Q 500 540 510 420 Q 420 500 320 500 Q 220 500 130 420 Z"
       fill="url(#wrapGrad)" stroke="#a87b18" stroke-width="1.2" stroke-opacity=".5"/>
     <path d="M 200 640 Q 230 560 320 540 Q 410 560 440 640" fill="none" stroke="#fff4cf" stroke-width="1" opacity=".5"/>
   </g>`);
 
-  /* sash */
   out.push(`<g class="wrapArt" style="transition-delay:1.2s">
     <rect x="176" y="616" width="288" height="50" rx="4" fill="url(#sashGrad)"/>
     <rect x="176" y="618" width="288" height="2" fill="#f7e7a1" opacity=".65"/>
     <rect x="176" y="662" width="288" height="2" fill="#f7e7a1" opacity=".5"/>
   </g>`);
 
-  /* skirt */
   out.push(`<g class="wrapArt" style="transition-delay:1.35s">
     <path d="M 200 666 L 440 666 L 490 890 Q 320 935 150 890 Z"
       fill="url(#wrapGrad)" stroke="#a87b18" stroke-width="1.3" stroke-opacity=".55"/>
@@ -501,7 +477,6 @@ function buildBouquet(){
     <path d="M 180 872 Q 320 915 460 872" fill="none" stroke="#fff4cf" stroke-width="1" opacity=".5"/>
   </g>`);
 
-  /* bow */
   out.push(`<g class="bowGroup">
     <path d="M 320 640 C 236 590 184 624 204 678 C 218 716 284 696 320 640 Z" fill="url(#bowGrad)" stroke="#7d5a0f" stroke-width="1.3"/>
     <path d="M 320 640 C 404 590 456 624 436 678 C 422 716 356 696 320 640 Z" fill="url(#bowGrad)" stroke="#7d5a0f" stroke-width="1.3"/>
@@ -509,7 +484,6 @@ function buildBouquet(){
     <ellipse cx="316" cy="636" rx="9" ry="6" fill="#f7e7a1" opacity=".8"/>
   </g>`);
 
-  /* tails */
   out.push(`<g class="tailGroup">
     <path d="M 302 652 C 274 752 248 862 230 918 L 264 900 L 290 940 L 296 884 C 306 792 312 716 312 652 Z"
       fill="url(#bowGrad)" stroke="#7d5a0f" stroke-width="1.2"/>
@@ -517,7 +491,6 @@ function buildBouquet(){
       fill="url(#bowGrad)" stroke="#7d5a0f" stroke-width="1.2"/>
   </g>`);
 
-  /* tag */
   out.push(`<g class="wrapArt" style="transition-delay:1.7s">
     <path d="M 374 666 Q 398 712 410 750" stroke="#d4af37" stroke-width="1.2" fill="none"/>
     <g transform="translate(412, 752) rotate(8)">
@@ -528,7 +501,6 @@ function buildBouquet(){
     </g>
   </g>`);
 
-  /* 4 glints only */
   [[100,240,0],[540,250,1.2],[320,60,2.1],[560,420,1.6]].forEach(g =>
     out.push(`<g transform="translate(${g[0]},${g[1]})">
       <path class="glint" style="--d:${g[2]}s" d="M0,-10 Q1.5,-1.5 10,0 Q1.5,1.5 0,10 Q-1.5,1.5 -10,0 Q-1.5,-1.5 0,-10Z" fill="#fff4cf"/></g>`));
@@ -545,7 +517,7 @@ function splitName(){
 }
 
 /* =========================================================
-   5. PARTICLE ENGINE — small & capped
+   5. PARTICLE ENGINE — with dynamic cap for the flood
    ========================================================= */
 const cvs = document.getElementById('fx');
 const ctx = cvs.getContext('2d', { alpha:true });
@@ -616,7 +588,9 @@ function kind(){
 }
 
 const P = [];
-const MAX = 160;
+const MAX_NORMAL = 170;
+const MAX_SHOWER = 460;
+let MAX = MAX_NORMAL;
 let ambient = 0;
 
 function add(o){
@@ -653,11 +627,16 @@ function cannon(x,y,dir,n,power){
   }
   sparks(x, y, n/2, power*.7);
 }
-function rain(n){
+function rain(n, opts={}){
+  const spd = opts.speed || [1.4, 2.8];
+  const small = opts.size || [10, 22];
+  const big = opts.flowerSize || [16, 30];
   for (let i = 0; i < n; i++){
     const k = kind();
-    add({ spr:pick(SPR[k]), x:rand(0,W), y:rand(-H*.7,-20), vx:rand(-.5,.5), vy:rand(1.4,2.8),
-          g:.004, drag:1, term:4, life:1e9, size:k==='flower'?rand(16,28):rand(10,18), sway:rand(.4,1) });
+    add({ spr:pick(SPR[k]), x:rand(0,W), y:rand(-H*.7,-20), vx:rand(-.6,.6), vy:rand(spd[0], spd[1]),
+          g:.006, drag:1, term:4.5, life:1e9,
+          size:k==='flower'?rand(big[0], big[1]):rand(small[0], small[1]),
+          sway:rand(.4,1) });
   }
 }
 function spawnAmbient(){
@@ -667,7 +646,7 @@ function spawnAmbient(){
         op:rand(.5,.8), amb:true });
 }
 
-let running = false, last = 0, acc = 0, ambientTimer = 0;
+let running = false, last = 0, ambientTimer = 0;
 
 function tick(now){
   if (!running) return;
@@ -724,7 +703,92 @@ document.addEventListener('visibilitychange', () => {
 });
 
 /* =========================================================
-   6. CHOREOGRAPHY — short, finite bursts
+   6. THE FLOOD — full-screen flower shower
+   ========================================================= */
+function floodMedium(){
+  MAX = MAX_SHOWER;
+  const cx = W/2, cy = H*.42;
+  const power = Math.sqrt(W*W + H*H) / 24;
+
+  // dense ring
+  for (let i = 0; i < 60; i++){
+    const a = i/60*TAU, k = kind();
+    add({ spr:pick(SPR[k]), x:cx, y:cy,
+          vx:Math.cos(a)*power*rand(.9,1.1), vy:Math.sin(a)*power*rand(.9,1.1) - 2,
+          size:k==='flower'?rand(22,36):rand(12,20),
+          g:.05, drag:.98, term:3, life:rand(200,280), sway:rand(.2,.6) });
+  }
+  // canopy
+  rain(50, { speed:[1.6,3], size:[12,22], flowerSize:[20,32] });
+
+  setTimeout(() => { MAX = MAX_NORMAL; }, 2800);
+}
+
+function flood(){
+  MAX = MAX_SHOWER;
+  const cx = W/2, cy = H*.40;
+  const diag = Math.sqrt(W*W + H*H);
+  const power = diag / 22;
+
+  // huge ring from centre — instantly covers the whole screen
+  for (let i = 0; i < 100; i++){
+    const a = i/100*TAU, k = kind();
+    add({ spr:pick(SPR[k]), x:cx, y:cy,
+          vx:Math.cos(a)*power*rand(.8,1.05),
+          vy:Math.sin(a)*power*rand(.8,1.05) - 2,
+          size:k==='flower'?rand(24,42):rand(14,24),
+          g:.04, drag:.975, term:2.5, life:rand(260,360),
+          sway:rand(.2,.7) });
+  }
+  // random fill from centre
+  for (let i = 0; i < 60; i++){
+    const a = Math.random()*TAU, sp = power*rand(.1,.9), k = kind();
+    add({ spr:pick(SPR[k]), x:cx, y:cy,
+          vx:Math.cos(a)*sp, vy:Math.sin(a)*sp - 3,
+          size:k==='flower'?rand(24,42):rand(14,24),
+          g:.045, drag:.975, term:2.5, life:rand(260,360),
+          sway:rand(.2,.7) });
+  }
+  // canopy rain — flowers falling from above right away
+  rain(90, { speed:[1.6,3.6], size:[14,26], flowerSize:[22,38] });
+
+  // corner bursts (top-left & top-right)
+  [[.14,.24],[.86,.24]].forEach(([fx,fy]) => {
+    const px = W*fx, py = H*fy;
+    for (let i = 0; i < 20; i++){
+      const a = Math.random()*TAU, sp = rand(4,10), k = kind();
+      add({ spr:pick(SPR[k]), x:px, y:py,
+            vx:Math.cos(a)*sp, vy:Math.sin(a)*sp,
+            size:k==='flower'?rand(20,34):rand(12,20),
+            g:.07, drag:.975, term:3.4, life:rand(200,280),
+            sway:rand(.2,.6) });
+    }
+  });
+  // side cannons aiming inward
+  cannon(-10, H*.55, 0, 36, power*.85);
+  cannon(W+10, H*.55, Math.PI, 36, power*.85);
+  // gold sparkle
+  sparks(cx, cy, 40, 8);
+
+  // second wave — tops up the coverage
+  setTimeout(() => {
+    if (!started) return;
+    MAX = MAX_SHOWER;
+    for (let i = 0; i < 70; i++){
+      const a = Math.random()*TAU, sp = power*rand(.4,1.1), k = kind();
+      add({ spr:pick(SPR[k]), x:rand(0,W), y:rand(-40, H*.3),
+            vx:Math.cos(a)*sp*.6, vy:Math.sin(a)*sp*.6 + 1,
+            size:k==='flower'?rand(24,42):rand(14,24),
+            g:.045, drag:.975, term:2.5, life:rand(260,360),
+            sway:rand(.2,.7) });
+    }
+    rain(40, { speed:[1.6,3.4], size:[14,24], flowerSize:[22,36] });
+    setTimeout(() => { MAX = MAX_NORMAL; }, 2600);
+  }, 350);
+}
+
+/* =========================================================
+   7. CHOREOGRAPHY
    ========================================================= */
 function cannons(){
   const power = Math.sqrt(H)*.55;
@@ -743,8 +807,8 @@ function bloomBlasts(){
 }
 function grandOpening(){
   startLoop();
+  floodMedium();                      // ← screen fills up right away on open
   burst(W/2, H*.42, 36, 9, true);
-  burst(W/2, H*.42, 22, 6);
   [[.2,.3],[.8,.28],[.5,.16]].forEach((p,i) =>
     setTimeout(() => burst(W*p[0], H*p[1], 20, 6), 400 + i*320));
   setTimeout(cannons, 1500);
@@ -753,16 +817,14 @@ function grandOpening(){
 }
 
 /* =========================================================
-   7. BOOT — listeners already attached above
+   8. BOOT
    ========================================================= */
 try { buildBouquet(); } catch(e){ console.error(e); }
 try { splitName(); }    catch(e){ console.error(e); }
 
 document.getElementById('more').addEventListener('click', () => {
   startLoop();
-  burst(W/2, H*.4, 40, 9, true);
-  cannons();
-  rain(30);
+  flood();                            // ← full-screen shower
 });
 </script>
 </body>
