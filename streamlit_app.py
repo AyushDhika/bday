@@ -356,7 +356,7 @@ function openGift(){
   document.body.classList.add('started');
   setTimeout(() => introEl.classList.add('gone'), 750);
   try { grandOpening(); } catch (e) { console.error(e); }
-  setTimeout(showGate, 3000);           // ← gate + voice after the flowers bloom
+  setTimeout(showGate, 4200);           // let the fuller bouquet and opening flourish finish
 }
 introEl.addEventListener('click', openGift);
 document.getElementById('openBtn').addEventListener('click', e => { e.stopPropagation(); openGift(); });
@@ -511,15 +511,25 @@ const flowers = [
   { t:'anthurium',  x:150, y:330, r:32, c:C.rose,  rot:-22, d:.45 },
   { t:'anthurium',  x:490, y:330, r:32, c:C.wine,  rot: 22, d:.48 },
   { t:'peony',      x:320, y:286, r:60, c:C.wine,  rot:  0, d:.12 },
+  // Extra blooms fill the outer edges and middle layers for a lush, abundant bouquet.
+  { t:'ranunculus', x:258, y:205, r:22, c:C.champ, rot:-12, d:.39 },
+  { t:'rose',       x:382, y:207, r:23, c:C.blush, rot: 14, d:.42 },
+  { t:'orchid',      x:190, y:255, r:23, c:C.plum,  rot:-24, d:.46 },
+  { t:'ranunculus', x:455, y:260, r:22, c:C.blush, rot: 12, d:.49 },
   { t:'calla',      x:250, y:330, r:32, c:C.champ, rot:-18, d:.55 },
   { t:'calla',      x:392, y:330, r:32, c:C.blush, rot: 18, d:.58 },
   { t:'rose',       x:320, y:378, r:34, c:C.rose,  rot:  0, d:.62 },
+  { t:'rose',       x:205, y:385, r:22, c:C.blush, rot:-10, d:.64 },
+  { t:'ranunculus', x:435, y:386, r:22, c:C.champ, rot: 10, d:.67 },
   { t:'orchid',     x:470, y:420, r:28, c:C.plum,  rot: 35, d:.66 },
   { t:'orchid',     x:170, y:420, r:28, c:C.wine,  rot:-35, d:.69 },
   { t:'ranunculus', x:240, y:410, r:24, c:C.champ, rot:  0, d:.73 },
   { t:'ranunculus', x:400, y:410, r:24, c:C.blush, rot:  0, d:.76 },
   { t:'rose',       x:286, y:446, r:26, c:C.wine,  rot: 12, d:.80 },
-  { t:'rose',       x:354, y:446, r:26, c:C.rose,  rot:-12, d:.83 }
+  { t:'rose',       x:354, y:446, r:26, c:C.rose,  rot:-12, d:.83 },
+  { t:'orchid',      x:245, y:470, r:20, c:C.rose,  rot:-18, d:.87 },
+  { t:'peony',       x:395, y:470, r:22, c:C.blush, rot: 16, d:.90 },
+  { t:'rose',        x:320, y:485, r:19, c:C.champ, rot:  0, d:.93 }
 ];
 const greenery = [
   { x:86,  y:250, len:140, dir:-168, d:.20 },
@@ -847,14 +857,14 @@ function floodMedium(){
   const cx = W/2, cy = H*.42;
   const power = Math.sqrt(W*W + H*H) / 24;
 
-  for (let i = 0; i < 60; i++){
-    const a = i/60*TAU, k = kind();
+  for (let i = 0; i < 88; i++){
+    const a = i/88*TAU, k = kind();
     add({ spr:pick(SPR[k]), x:cx, y:cy,
           vx:Math.cos(a)*power*rand(.9,1.1), vy:Math.sin(a)*power*rand(.9,1.1) - 2,
           size:k==='flower'?rand(22,36):rand(12,20),
           g:.05, drag:.98, term:3, life:rand(200,280), sway:rand(.2,.6) });
   }
-  rain(50, { speed:[1.6,3], size:[12,22], flowerSize:[20,32] });
+  rain(78, { speed:[1.6,3.2], size:[12,24], flowerSize:[20,34] });
   setTimeout(() => { MAX = MAX_NORMAL; }, 2800);
 }
 
@@ -935,11 +945,11 @@ function bloomBlasts(){
 function grandOpening(){
   startLoop();
   floodMedium();
-  burst(W/2, H*.42, 36, 9, true);
-  [[.2,.3],[.8,.28],[.5,.16]].forEach((p,i) =>
-    setTimeout(() => burst(W*p[0], H*p[1], 20, 6), 400 + i*320));
-  setTimeout(cannons, 1500);
-  setTimeout(() => rain(22), 2200);
+  burst(W/2, H*.42, 52, 10, true);
+  [[.18,.32],[.82,.30],[.5,.16],[.32,.22],[.68,.22]].forEach((p,i) =>
+    setTimeout(() => burst(W*p[0], H*p[1], 26, 7), 350 + i*360));
+  setTimeout(cannons, 1650);
+  setTimeout(() => rain(38, { speed:[1.5,3.2], size:[12,24], flowerSize:[20,34] }), 2250);
   bloomBlasts();
 }
 
