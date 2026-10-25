@@ -248,7 +248,7 @@ BIRTHDAY_HTML = r"""
 
 <main>
   <header>
-    <p class="eyebrow rv" style="--d:.15s">✦ Today the world celebrates ✦</p>
+    <p class="eyebrow rv" style="--d:.15s">✦ Baddie ka Birthday ✦</p>
     <h1>
       <span class="script rv" style="--d:.35s">Happy Birthday</span>
       <!-- ✏️ EDIT HER NAME HERE -->
